@@ -1,0 +1,17 @@
+build/
+.vscode/
+*.so
+*.a
+data/learning/
+data/named_learning/
+data/png/
+data/plots/
+*/*.pt
+*.pyc
+.tags
+.tags_sorted_by_file
+*.json
+*.out
+*/*.out
+c_env/
+pyenv/

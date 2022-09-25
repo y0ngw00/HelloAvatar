@@ -1,0 +1,10 @@
+walk_long.bvh
+run_long.bvh
+jump_lsw.bvh
+breakdance_lsw.bvh
+turndance_lsw.bvh
+uppercut_lsw.bvh
+mxm_lpunch.bvh
+mxm_rpunch.bvh
+mxm_rkick3.bvh
+mxm_lkick2.bvh
