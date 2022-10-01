@@ -42,8 +42,6 @@ initWindow(int w,int h,const std::string& name)
 	glutMouseFunc(mouseEvent);
 	glutMotionFunc(motionEvent);
 	glutTimerFunc(30, timerEvent, 0);
-
-    
 }
 GLUTWindow*
 GLUTWindow::

@@ -1,12 +1,13 @@
 #include "UIManager.h"
 #include <iostream>
-
 #include "implot.h"
+#include "imgui_filebrowser.h"
 #include "imgui_internal.h"
 #include "imgui_impl_glut.h"
 #include "imgui_impl_opengl2.h"
 
 static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+ImGuiFileBrowser m_FileDialog; // As a class member or globally
 
 UIManager::
 UIManager()
@@ -30,6 +31,7 @@ initialize()
     ImGui::StyleColorsClassic();
     ImGui_ImplGLUT_Init();
     ImGui_ImplOpenGL2_Init();
+
 }
 
 void
@@ -51,13 +53,29 @@ void
 UIManager::
 display()
 {
+
+
+    bool open = false;
+    
+
     if (ImGui::BeginMainMenuBar())
     {
+        
+
         if (ImGui::BeginMenu("File"))
         {
             ImGui::MenuItem("(demo menu)", NULL, false, false);
 			if (ImGui::MenuItem("New")) {}
-			if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+			if (ImGui::BeginMenu("Open", "Ctrl+O")) 
+            {
+                if(ImGui::MenuItem("BVH", NULL))
+                    open = true;
+
+                if(ImGui::MenuItem("FBX", NULL))
+                    open = true;
+
+                ImGui::EndMenu();
+            }
 
 			ImGui::Separator();
 			if (ImGui::BeginMenu("Options"))
@@ -81,6 +99,16 @@ display()
         }
         ImGui::EndMainMenuBar();
     }
+
+    if(open)
+        ImGui::OpenPopup("Open File");
+
+    if(m_FileDialog.showFileDialog("Open File", ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".bvh,.fbx"))
+    {
+        // std::cout << "Open File : "<< m_FileDialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
+        std::cout << "Open File : "<< m_FileDialog.selected_path << std::endl;    // The absolute path to the selected file
+    }
+
     // // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
     {
 		ImGui::Begin("Performance"); 
@@ -104,6 +132,7 @@ display()
 UIManager::
 ~UIManager()
 {
+    // m_FileDialog = nullptr;
     // Cleanup
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplGLUT_Shutdown();
