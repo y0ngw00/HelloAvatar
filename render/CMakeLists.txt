@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10.2)
 project(render)
 
+link_directories(../loader/)
+include_directories(../loader/)
 link_directories(../sim/)
 include_directories(../sim/)
 link_directories(../imgui/)

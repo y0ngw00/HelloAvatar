@@ -6,13 +6,15 @@
 #include <iomanip>
 #include <Eigen/Core>
 
+
+class UIManager;
+
 class Window : public GLUTWindow3D
 {
 public:
 	Window();
 
 	void render() override;
-	void ImGuiDisplay();
 
 	void step();
 	void reset(int frame=-1);
@@ -40,6 +42,12 @@ protected:
 
     int mMotionType, mPrevMotionType;
     std::vector<std::string> motion_lists;
+
+private:
+	virtual ~Window();
+
+	UIManager* m_UIManager;
+
 };
 
 #endif

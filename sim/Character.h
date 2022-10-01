@@ -1,6 +1,6 @@
 #ifndef __CHARACTER_H__
 #define __CHARACTER_H__
-#include "BVH.h"
+#include "BVHLoader.h"
 
 class Motion;
 class Character
