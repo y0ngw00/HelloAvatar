@@ -1,6 +1,7 @@
 #include "GLUTWindow3D.h"
 #include "Camera.h"
 #include <GL/glut.h>
+#include "imgui.h"
 
 GLUTWindow3D::
 GLUTWindow3D()

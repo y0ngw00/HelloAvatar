@@ -1,5 +1,7 @@
 #include "Window.h"
 #include "Camera.h"
+#include "UIManager.h"
+
 // #include "sim/BVH.h"
 #include <fstream>
 #include <time.h>
@@ -9,7 +11,6 @@
 
 static bool show_demo_window = true;
 static bool show_another_window = true;
-static ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 Window::
 Window()
@@ -36,7 +37,18 @@ Window()
 	}
 	txtread.close();
 
+	m_UIManager = nullptr;
+	m_UIManager->initialize();
+
+
 }
+
+Window::
+~Window()
+{
+	m_UIManager = nullptr;
+}
+
 void
 Window::
 render()
@@ -48,44 +60,10 @@ render()
 		DrawUtils::buildMeshes();
 	}
 
-	ImGui_ImplOpenGL2_NewFrame();
-    ImGui_ImplGLUT_NewFrame();
-
-    ImGuiDisplay();
-    // Rendering
-    ImGui::Render();
-    ImGuiIO& io = ImGui::GetIO();
-
 	DrawUtils::drawGround(0,100.0);
-
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+	m_UIManager->render();
 
 }
-
-void
-Window::
-ImGuiDisplay()
-{
-    // // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-    {
-
-        static int counter = 0;
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::End();
-    }
-
-    // // 3. Show another simple window.
-    {
-        ImGui::Begin("Indicator");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
-
-        if (ImGui::CollapsingHeader("Discriminator value"))
-        {
-    	
-    	}
-        ImGui::End();
-    }
-}
-
 
 void
 Window::
@@ -113,7 +91,12 @@ keyboard(unsigned char key, int x, int y)
 		case 'C':mCapture=true;break;
 		case ' ':mPlay = !mPlay; break;
 
-		default:GLUTWindow3D::keyboard(key,x,y);break;
+		default:
+		{
+			GLUTWindow3D::keyboard(key,x,y);
+			m_UIManager->keyboardEvent(key,x,y);
+			break;
+		}
 	}
 }
 void
@@ -126,7 +109,12 @@ special(int key, int x, int y)
 		case 101: break;//Up
 		case 102: break;//Right
 		case 103: break;//bottom
-		default:GLUTWindow3D::special(key,x,y);break;
+		default:
+		{
+			GLUTWindow3D::special(key,x,y);
+			m_UIManager->specialEvent(key,x,y);
+			break;
+		}
 	}
 
 }
@@ -135,8 +123,7 @@ Window::
 mouse(int button, int state, int x, int y)
 {
 	GLUTWindow3D::mouse(button,state,x,y);
-
-
+	m_UIManager->mouseEvent(button,state,x,y);
 
 	if(mMouse == 2) // Right
 	{
@@ -153,6 +140,8 @@ Window::
 motion(int x, int y)
 {
 	GLUTWindow3D::motion(x,y);
+	m_UIManager->motionEvent(x,y);
+
 	if(mMouse == 2 && mDrag)
 	{
 		auto ray = mCamera->getRay(x,y);
@@ -170,6 +159,7 @@ reshape(int w, int h)
 	mScreenshotTemp.resize(4*w*h);
 	mScreenshotTemp2.resize(4*w*h);
 	GLUTWindow3D::reshape(w,h);
+	m_UIManager->reshapeEvent(w,h);
 }
 void
 Window::

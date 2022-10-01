@@ -2,12 +2,10 @@
 #define __GLUT_WINDOW_H__
 #include <string>
 #include <vector>
-#include "imgui.h"
-#include "implot.h"
-#include "imgui_internal.h"
-#include "imgui_impl_glut.h"
-#include "imgui_impl_opengl2.h"
+
+class UIManager;
 class Camera;
+
 class GLUTWindow
 {
 public:
@@ -33,5 +31,6 @@ protected:
 	virtual void motion(int x, int y) = 0;
 	virtual void reshape(int w, int h) = 0;
 	virtual void timer(int tic) = 0;
+
 };
 #endif
