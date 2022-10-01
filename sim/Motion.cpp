@@ -1,7 +1,7 @@
 #include "Motion.h"
 #include <sstream>
 #include "MathUtils.h"
-#include "BVH.h"
+#include "BVHLoader.h"
 #include <Eigen/Geometry>
 #include <iostream>
 

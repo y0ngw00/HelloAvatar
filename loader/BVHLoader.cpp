@@ -1,5 +1,4 @@
-#include "BVH.h"
-#include "MathUtils.h"
+#include "BVHLoader.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>

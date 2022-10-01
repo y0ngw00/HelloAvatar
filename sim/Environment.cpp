@@ -4,7 +4,7 @@
 #include <sstream>
 #include "Environment.h"
 #include "MathUtils.h"
-#include "BVH.h"
+#include "BVHLoader.h"
 #include "Motion.h"
 
 

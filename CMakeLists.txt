@@ -27,6 +27,6 @@ IF(NOT Boost_FOUND)
 ENDIF()
 
 add_subdirectory( sim )
-# add_subdirectory( python )
 add_subdirectory( render )
 add_subdirectory( imgui )
+add_subdirectory( loader )
