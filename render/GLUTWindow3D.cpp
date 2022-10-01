@@ -3,6 +3,9 @@
 #include <GL/glut.h>
 #include "imgui.h"
 
+// static float skyColor[] = {239.0/255.0, 251.0/255.0, 254.0/255.0, 1.0};
+ static float skyColor[] = {0.95,0.95,0.95,1.0};
+
 GLUTWindow3D::
 GLUTWindow3D()
 	:GLUTWindow(),mCamera(new Camera()),mDrag(false),mMouse(0),mPrevX(0),mPrevY(0)
@@ -13,7 +16,7 @@ void
 GLUTWindow3D::
 display()
 {
-	glClearColor(1.0,1.0,1.0,1.0);
+	glClearColor(skyColor[0],skyColor[1],skyColor[2],skyColor[3]);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
 	this->initLights();
