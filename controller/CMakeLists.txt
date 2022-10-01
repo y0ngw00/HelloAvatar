@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10.2)
-project(sim)
+project(con)
 
 SET(CMAKE_BUILD_TYPE Release CACHE STRING
 	"Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel.")
@@ -23,5 +23,5 @@ include_directories(${DART_INCLUDE_DIRS})
 # include_directories(${PYTHON_INCLUDE_DIR})
 file(GLOB srcs "*.h" "*.cpp")
 
-add_library(sim ${srcs})
-target_link_libraries(sim ${DART_LIBRARIES} Eigen3::Eigen)
+add_library(con ${srcs})
+target_link_libraries(con ${DART_LIBRARIES} loader Eigen3::Eigen)

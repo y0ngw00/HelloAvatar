@@ -2,17 +2,19 @@
 #define __ENVIRONMENT_H__
 #include <iostream>
 #include <tuple>
+#include <vector>
 #include <Eigen/Core>
 
 class BVH;
 class Motion;
 class Character;
-class Environment
+class Controller
 {
 public:
-	Environment();
+	Controller();
 
 	void reset(int motion_idx = -1, bool RSI = true);
+	void loadBVH();
 	void FollowBVH(int idx);
 
 	const Eigen::VectorXd& getNumFrames();

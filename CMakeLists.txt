@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10.2)
-project(com)
+project(HelloAvatar)
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release" CACHE STRING
       "Choose the type of build, options are: Debug Release
@@ -26,7 +26,7 @@ IF(NOT Boost_FOUND)
 	find_package(Boost 1.71 EXACT COMPONENTS filesystem python38 numpy38 program_options)
 ENDIF()
 
-add_subdirectory( sim )
+add_subdirectory( controller )
 add_subdirectory( render )
 add_subdirectory( imgui )
 add_subdirectory( loader )

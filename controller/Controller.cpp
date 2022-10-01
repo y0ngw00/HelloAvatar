@@ -2,14 +2,14 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "Environment.h"
+#include "Controller.h"
 #include "MathUtils.h"
 #include "BVHLoader.h"
 #include "Motion.h"
 
 
-Environment::
-Environment()
+Controller::
+Controller()
 	:mControlHz(30),
 	mElapsedFrame(0),
 	mMaxElapsedFrame(300)
@@ -56,15 +56,21 @@ Environment()
 }
 
 void
-Environment::
+Controller::
 reset(int motion_idx, bool RSI)
 {
 	mFrame = 0;
 	mElapsedFrame = 0;
 }
 
+void Controller::
+loadBVH()
+{
+	std::cout<<"Load BVH from file :"<<"\n";
+}
+
 void
-Environment::
+Controller::
 FollowBVH(int idx){
 
 	// auto& motion = mMotions[idx];
