@@ -9,5 +9,7 @@ cmake -DCMAKE_BUILD_TYPE=Release \
       -DFCL_LIBRARIES=$CENVDIR/lib/libfcl.so \
       -DCCD_INCLUDE_DIRS=$CENVDIR/include/ccd \
       -DCCD_LIBRARIES=$CENVDIR/lib/libccd.so \
+      -DFBX_INCLUDE_DIRS=$CENVDIR/include/fbxsdk \
+      -DFBX_LIBRARIES_DIRS=$CENVDIR/lib/libfbxsdk.lib \
       ..
 cd ..

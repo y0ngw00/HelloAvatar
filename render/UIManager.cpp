@@ -13,6 +13,8 @@ UIManager::
 UIManager()
 {
     initialize();
+    m_FilePath = "";
+    m_bOpenBVH = false;
 }
 
 void
@@ -25,7 +27,6 @@ initialize()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     ImGui::StyleColorsDark();
     ImPlot::CreateContext();
-
 
     // Setup Dear ImGui style
     ImGui::StyleColorsClassic();
@@ -53,15 +54,13 @@ void
 UIManager::
 display()
 {
-
-
-    bool open = false;
-    
+    bool openBVH = false;
+    bool openFBX = false;
+    bool bLoadSuccess= false;
+    std::string fileExt = "";
 
     if (ImGui::BeginMainMenuBar())
     {
-        
-
         if (ImGui::BeginMenu("File"))
         {
             ImGui::MenuItem("(demo menu)", NULL, false, false);
@@ -69,10 +68,16 @@ display()
 			if (ImGui::BeginMenu("Open", "Ctrl+O")) 
             {
                 if(ImGui::MenuItem("BVH", NULL))
-                    open = true;
+                {
+                    fileExt = ".bvh";
+                    openBVH = true;
+                }
 
                 if(ImGui::MenuItem("FBX", NULL))
-                    open = true;
+                {
+                    fileExt = ".fbx";
+                    openFBX = true;
+                }
 
                 ImGui::EndMenu();
             }
@@ -100,33 +105,52 @@ display()
         ImGui::EndMainMenuBar();
     }
 
-    if(open)
+    if(openBVH || openFBX)
         ImGui::OpenPopup("Open File");
 
-    if(m_FileDialog.showFileDialog("Open File", ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), ".bvh,.fbx"))
+    if(m_FileDialog.showFileDialog("Open File", ImGuiFileBrowser::DialogMode::OPEN, ImVec2(700, 310), fileExt))
+    {        // std::cout << "Open File : "<< m_FileDialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
+        // bLoadSuccess = true;
+    }
+
+    if(m_FileDialog.selected_path != "" && bLoadSuccess)
     {
-        // std::cout << "Open File : "<< m_FileDialog.selected_fn << std::endl;      // The name of the selected file or directory in case of Select Directory dialog mode
-        std::cout << "Open File : "<< m_FileDialog.selected_path << std::endl;    // The absolute path to the selected file
+        // m_FilePath = m_FileDialog.selected_path;
+        // std::cout << "Open File : "<< m_FileDialog.selected_path << std::endl;    // The absolute path to the selected file      
+
     }
 
     // // 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-    {
-		ImGui::Begin("Performance"); 
-        static int counter = 0;
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        ImGui::End();
-    }
+    // {
+	// 	ImGui::Begin("Performance"); 
+    //     static int counter = 0;
+    //     ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    //     ImGui::End();
+    // }
 
-    // // 3. Show another simple window.
-    {
-        ImGui::Begin("Indicator");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
+    // // // 3. Show another simple window.
+    // {
+    //     ImGui::Begin("Indicator");   // Pass a pointer to our bool variable (the window will have a closing button that will clear the bool when clicked)
 
-        if (ImGui::CollapsingHeader("Discriminator value"))
-        {
+    //     if (ImGui::CollapsingHeader("Discriminator value"))
+    //     {
     	
-    	}
-        ImGui::End();
+    // 	}
+    //     ImGui::End();
+    // }
+}
+
+const
+std::string
+UIManager::
+GetFilePath()
+{
+    if(m_FileDialog.selected_path != "")
+    {
+        return m_FileDialog.selected_path;
     }
+    else
+        return "";
 }
 
 UIManager::

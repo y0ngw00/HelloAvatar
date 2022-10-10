@@ -1,5 +1,6 @@
 #ifndef __UIMANAGER_H__
 #define __UIMANAGER_H__
+#include <string>
 
 class UIManager
 {
@@ -15,9 +16,14 @@ public:
 	void motionEvent(int x,int y);
 	void reshapeEvent(int w,int h);
 
+
+public:
+    const std::string GetFilePath();
 private:
     virtual ~UIManager();
-    
+
+    std::string m_FilePath;
+    bool m_bOpenBVH;
 
 
 };
