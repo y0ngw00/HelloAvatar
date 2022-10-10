@@ -7,6 +7,11 @@
 #include <vector>
 #include <GL/glew.h>
 #include <GL/glut.h>
+
+class BVH;
+class Character;
+
+
 struct DrawMesh
 {
 	GLfloat *vertices;
@@ -61,6 +66,10 @@ public:
 
 class DrawUtils
 {
+public:
+
+	static void drawSkeleton(Character* _character, BVH* _bvh, int _frame);
+
 public:
 	enum eDrawMode
 	{
@@ -141,7 +150,7 @@ private:
 	static DrawMesh* capsule_wire_simple;
 
 	static GLuint ground_texture_id;
-	// static GLuint object_texture_id;
+	static GLuint character_texture_id;
 	static void drawBoxSolid(const Eigen::Vector3d& pos, const Eigen::Vector3d& size);
 	static void drawBoxWire(const Eigen::Vector3d& pos, const Eigen::Vector3d& size);
 	static void drawCylinderSolidWire(double r, double h, eDrawMode draw_mode = eDrawSolid);

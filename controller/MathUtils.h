@@ -12,6 +12,9 @@ public:
 	static Eigen::Isometry3d orthonormalize(const Eigen::Isometry3d& T_old);
 	static Eigen::VectorXd ravel(const std::vector<Eigen::Vector3d>& vv);
 	static Eigen::VectorXd ravel(const std::vector<Eigen::VectorXd>& vv);
+	static Eigen::Matrix3d ExpMapRot(const Eigen::Vector3d& _q);
+	static Eigen::Matrix3d MakeSkewSymmetric(const Eigen::Vector3d& _v);
+	static Eigen::Matrix3d GetRotationMatrixBetweenAxes(const Eigen::Vector3d& _u,const Eigen::Vector3d& _v);
 template<typename T>
 	static T ravel(const T& first) {
 		return first;

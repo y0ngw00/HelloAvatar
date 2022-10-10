@@ -1,6 +1,8 @@
 #include "DrawUtils.h"
+#include "MathUtils.h"
 #include <iostream>
 #include "lodepng.h"
+#include "Character.h"
 #include <assert.h>
 
 
@@ -23,7 +25,7 @@ DrawMesh* DrawUtils::capsule_wire_simple = nullptr;
 bool DrawUtils::initialized = false;
 
 GLuint DrawUtils::ground_texture_id = 0;
-// GLuint DrawUtils::object_texture_id = 0;
+GLuint DrawUtils::character_texture_id = 0;
 
 void
 DrawMesh::
@@ -1921,6 +1923,99 @@ buildTexture(const char* filename)
 
 void
 DrawUtils::
+drawSkeleton(Character* _character, BVH* _bvh, int _frame)
+{
+	enableTexture(character_texture_id);
+
+	std::vector<Eigen::Vector3d> offsets = _character->GetOffset();
+	std::vector<int> parentIndices = _character->getParentsIndices();
+
+	int numJoints = parentIndices.size();
+
+	std::vector<Eigen::Isometry3d> tfs;
+	tfs.reserve(numJoints);
+
+	Eigen::MatrixXd rotMats = _bvh->getRotation(_frame); 
+	std::vector<std::string> names = _bvh->getNodeNames();
+
+	glLineWidth(3.0);
+
+	for(int i =0;i<offsets.size();i++)
+	{
+		int parentIdx= parentIndices[i];
+
+		Eigen::Isometry3d T;
+		T.setIdentity();
+		Eigen::Isometry3d localT(Eigen::Isometry3d::Identity());
+
+		Eigen::Matrix3d rot = rotMats.block<3,3>(0, 3*i);
+		Eigen::Vector3d offs = offsets[i];
+		if(i==0)
+		{
+			T.linear() = rot;
+			T.translation() = _bvh->getPosition(_frame);
+			tfs[i] = T;
+		}
+		
+		else
+		{
+			glColor3f(0.8,0.2,0.2);
+			Eigen::Isometry3d parentT = tfs[parentIdx];
+			localT.linear() = rot;
+			localT.translation() = offs;
+			
+			T = parentT * localT;
+			tfs[i] = T;
+
+		}
+		// std::cout<<i<<" : "<<(tfs[i].translation() - tfs[parentIdx].translation()).transpose()<<"\n";
+
+		glPushMatrix();
+		glMultMatrixd(T.data());
+		glColor3f(0.8,0.8,0.8);
+		glDisable(GL_LIGHTING);
+		glDisable(GL_TEXTURE_2D);
+		drawSphere(0.05, DrawUtils::eDrawSolid);
+		glColor3f(0.0,0.0,0.0);
+		
+		drawSphere(0.05*1.05,DrawUtils::eDrawWireSimple);		
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_LIGHTING);
+
+		if(parentIdx != -1)
+		{
+			Eigen::Vector3d axis = tfs[i].translation() - tfs[parentIdx].translation();
+			Eigen::Vector3d center = Eigen::Vector3d::UnitY();
+			double nodeLength = axis.norm();
+			center *= nodeLength/2;
+			axis.normalize();
+			Eigen::Matrix3d nodeM = MathUtils::GetRotationMatrixBetweenAxes(Eigen::Vector3d(0.0,0.0,1.0),axis);
+			Eigen::Isometry3d nodeTf(Eigen::Isometry3d::Identity());
+			nodeTf.linear() = nodeM;
+			// nodeTf.translatio n() = center;
+
+			glEnable(GL_LIGHTING);
+			glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+			glEnable(GL_COLOR_MATERIAL);
+			glPushMatrix();
+			glMultMatrixd(nodeTf.data());
+			glColor3f(0.865,0.533, 0.2627);
+			Eigen::Vector3d size(0.1,0.1,0.1);
+			glPolygonMode(GL_FRONT_AND_BACK,GL_FILL);
+			drawCylinder(0.02, nodeLength, DrawUtils::eDrawSolid);
+
+			glPopMatrix();
+		}
+
+		glPopMatrix();
+    	
+	}
+	tfs.clear();
+	disableTexture();
+}
+
+void
+DrawUtils::
 drawRect(const Eigen::Vector3d& pos, const Eigen::Vector3d& size, eDrawMode draw_mode)
 {
 	Eigen::Vector3d a = Eigen::Vector3d(pos[0] - 0.5 * size[0], pos[1] - 0.5 * size[1], pos[2]);
@@ -2550,7 +2645,7 @@ buildMeshes()
 	capsule = MeshUtils::buildCapsuleMesh(32,32);
 	capsule_wire_simple	 = MeshUtils::buildCapsuleWireSimpleMesh(32,32);
 
-	// object_texture_id = MeshUtils::buildTexture((std::string(ROOT_DIR)+"/data/object.png").c_str());
+	character_texture_id = MeshUtils::buildTexture((std::string(ROOT_DIR)+"/data/textures/simchar.png").c_str());
 	ground_texture_id = MeshUtils::buildTexture((std::string(ROOT_DIR)+"/data/textures/ground.png").c_str());
 	initialized = true;
 }
