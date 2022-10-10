@@ -18,7 +18,6 @@ BVH::
 load(const std::string& file)
 {
 
-	std::vector<std::string> hierarchy;
 	std::string str;
 
 	std::ifstream ifsh(mFile);

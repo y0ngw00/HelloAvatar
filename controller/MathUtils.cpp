@@ -1,6 +1,6 @@
 #include "MathUtils.h"
 
-
+#define EPSILON_EXPMAP_THETA 1.0e-3
 
 Eigen::Vector3d
 MathUtils::
@@ -60,3 +60,57 @@ ravel(const std::vector<Eigen::VectorXd>& vv)
 	}
 	return ret;
 }
+
+Eigen::Matrix3d
+MathUtils::
+ExpMapRot(const Eigen::Vector3d& _q)
+{
+  double theta = _q.norm();
+
+  Eigen::Matrix3d R = Eigen::Matrix3d::Zero();
+  Eigen::Matrix3d qss = MakeSkewSymmetric(_q);
+  Eigen::Matrix3d qss2 = qss * qss;
+
+// Using Rodrigues' rotation formula,
+  if (theta < EPSILON_EXPMAP_THETA)
+    R = Eigen::Matrix3d::Identity() + qss + 0.5 * qss2;
+  else
+    R = Eigen::Matrix3d::Identity() + (sin(theta) / theta) * qss
+        + ((1 - cos(theta)) / (theta * theta)) * qss2;
+
+  return R;
+}
+
+Eigen::Matrix3d
+MathUtils::
+MakeSkewSymmetric(const Eigen::Vector3d& _v)
+{
+  Eigen::Matrix3d result = Eigen::Matrix3d::Zero();
+
+  result(0, 1) = -_v(2);
+  result(1, 0) = _v(2);
+  result(0, 2) = _v(1);
+  result(2, 0) = -_v(1);
+  result(1, 2) = -_v(0);
+  result(2, 1) = _v(0);
+
+  return result;
+}
+
+Eigen::Matrix3d
+MathUtils::
+GetRotationMatrixBetweenAxes(const Eigen::Vector3d& _u,const Eigen::Vector3d& _v)
+{
+	// make sure that we actually have two unique vectors.
+    // if(_u == _v) return Eigen::Vector3d::Identity();
+
+	Eigen::Vector3d axis = _u.cross(_v);
+
+	
+    Eigen::Matrix3d M(Eigen::Matrix3d::Identity());
+	M.row(0) = axis;
+	M.row(1) = _v;
+	M.row(2) = _u;
+	return M;
+}
+

@@ -13,19 +13,24 @@ class Controller
 public:
 	Controller();
 
-	void reset(int motion_idx = -1, bool RSI = true);
-	void loadBVH();
+	void reset();
+	void step();
+	void loadBVH(const std::string& _path);
 	void FollowBVH(int idx);
 
-	const Eigen::VectorXd& getNumFrames();
+	int GetCurrentFrame(){return mFrame;}
+
+	BVH* getBVH() {return m_bvh;}
+	Character* getCharacter() {return m_Character;}
 private:
 
 	int mControlHz, mSimulationHz;
 	int mElapsedFrame, mFrame;
-	int mMaxElapsedFrame;
+	int mMaxFrame;
 
-	// Character *mKinCharacter;
-	std::vector<Motion*> mMotions;
+	BVH *m_bvh;
+	Character* m_Character;
+	std::vector<Motion*> m_Motions;
 
 	double mFramesPerMotion;
 

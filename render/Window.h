@@ -8,6 +8,7 @@
 
 
 class UIManager;
+class Controller;
 
 class Window : public GLUTWindow3D
 {
@@ -47,6 +48,7 @@ private:
 	virtual ~Window();
 
 	UIManager* m_UIManager;
+	Controller* m_Controller;
 
 };
 

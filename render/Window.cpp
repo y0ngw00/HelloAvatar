@@ -7,7 +7,10 @@
 #include <time.h>
 #include <iostream>
 #include "DrawUtils.h"
-#include "Environment.h"
+#include "Controller.h"
+
+#include "Character.h"
+#include "BVHLoader.h"
 
 static bool show_demo_window = true;
 static bool show_another_window = true;
@@ -20,9 +23,7 @@ Window()
 	mCapture(false)
 {
 	mCamera->setLookAt(Eigen::Vector3d(0.0,0.8,-3.0));
-	mCamera->setEye( Eigen::Vector3d(0.0,0.3,0.0));
-
-	this->reset();
+	mCamera->setEye( Eigen::Vector3d(0.0,1.0,2.0));
 
 	char buffer[100];
 	std::ifstream txtread;
@@ -40,7 +41,10 @@ Window()
 	m_UIManager = nullptr;
 	m_UIManager->initialize();
 
+	m_Controller = new Controller();
+	m_Controller->loadBVH(motion_lists[0]);
 
+	this->reset();
 }
 
 Window::
@@ -53,30 +57,35 @@ void
 Window::
 render()
 {
-	initLights();
-	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
-	glEnable(GL_MULTISAMPLE);
 	if(DrawUtils::initialized == false){
 		DrawUtils::buildMeshes();
 	}
-
+	initLights();
+	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+	glEnable(GL_MULTISAMPLE);
+	
 	DrawUtils::drawGround(0,100.0);
+	DrawUtils::drawSkeleton(m_Controller->getCharacter(),m_Controller->getBVH(), m_Controller->GetCurrentFrame());
 	m_UIManager->render();
 
+	if(m_UIManager->GetFilePath() != "")
+	{
+		std::cout<<m_UIManager->GetFilePath()<<"\n";
+	}
 }
 
 void
 Window::
 reset(int frame)
 {
-
+	m_Controller->reset();
 }
 
 void
 Window::
 step()
 {
-
+	m_Controller->step();
 }
 
 void

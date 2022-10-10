@@ -6,12 +6,13 @@
 #include <sstream>
 
 Character::
-Character(const std::vector<std::string>& bvh_map,
-			const Eigen::VectorXd& w_joint)
-	:mBVHMap(bvh_map),
-	mJointWeights(w_joint)
+Character(BVH* _bvh)
 {
-
+	mBVHMap = _bvh->getNodeNames();
+	m_ParentsIndices = _bvh->getParents();
+	buildBVHIndices(_bvh->getNodeNames());
+	recordHierarchy(_bvh);
+	SetOffset(_bvh->getOffsets());
 }
 
 Eigen::Isometry3d
@@ -66,10 +67,16 @@ setReferenceTransform(const Eigen::Isometry3d& T_ref)
 
 void
 Character::
+SetOffset(const std::vector<Eigen::Vector3d>& _offset)
+{
+	m_offset = _offset;
+}
+
+void
+Character::
 buildBVHIndices(const std::vector<std::string>& bvh_names)
 {
 	mBVHIndices.reserve(mBVHMap.size());
-	mBVHNames = bvh_names;
 
 	for(int i=0;i<mBVHMap.size();i++)
 	{

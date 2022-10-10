@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include "Controller.h"
+#include "Character.h"
 #include "MathUtils.h"
 #include "BVHLoader.h"
 #include "Motion.h"
@@ -11,67 +12,61 @@
 Controller::
 Controller()
 	:mControlHz(30),
-	mElapsedFrame(0),
-	mMaxElapsedFrame(300)
+	mElapsedFrame(0)
 {
-	char buffer[100];
-	std::ifstream txtread;
-	std::vector<std::string> motion_lists;
-	std::string txt_path = "/data/bvh/motionlist.txt";
-	txtread.open(std::string(ROOT_DIR)+txt_path);
-	if(!txtread.is_open())
-	{
-		std::cout<<"Text file does not exist from : "<< txt_path << std::endl;
-		return;
-	}
-	while(txtread>>buffer) motion_lists.push_back(std::string(ROOT_DIR)+"/data/bvh/"+ std::string(buffer));
-	txtread.close();
-
-
-	mNumMotions = motion_lists.size();
-
-	bool load_tree =false;
-	for(auto bvh_path : motion_lists)
-	{
-		BVH* bvh = new BVH(bvh_path);
-		Motion* motion = new Motion(bvh);
-		for(int j=0;j<bvh->getNumFrames();j++)
-		{
-			motion->append(bvh->getPosition(j), bvh->getRotation(j),false);
-		}
-		motion->computeVelocity();
-		mMotions.push_back(motion);
-
-		if(!load_tree)
-		{
-			// mKinCharacter->buildBVHIndices(motion->getBVH()->getNodeNames());
-			load_tree = true;			
-		}
-	}
-
 	mElapsedFrame = 0;
 	mFrame = 0;
+	mMaxFrame = 0;
+	m_Character = nullptr;
 
 	this->reset();
 }
 
 void
 Controller::
-reset(int motion_idx, bool RSI)
+reset()
 {
 	mFrame = 0;
 	mElapsedFrame = 0;
 }
 
-void Controller::
-loadBVH()
+void
+Controller::
+step()
 {
-	std::cout<<"Load BVH from file :"<<"\n";
+	mFrame++;
+	if(mFrame >= mMaxFrame) reset();
+}
+
+void Controller::
+loadBVH(const std::string& _path)
+{
+	std::string path = std::string(ROOT_DIR)+"/data/bvh/" + _path;
+	
+	m_bvh = new BVH(path);
+	m_Character = new Character(m_bvh);
+	
+	Motion* motion = new Motion(m_bvh);
+	for(int j=0;j<m_bvh->getNumFrames();j++){
+		motion->append(m_bvh->getPosition(j), m_bvh->getRotation(j),false);
+	}
+
+	motion->computeVelocity();
+	
+	
+	mMaxFrame = m_bvh->getNumFrames();
+
+	m_Motions.push_back(motion);
+
+
+	// delete bvh;
+	delete motion;
 }
 
 void
 Controller::
-FollowBVH(int idx){
+FollowBVH(int idx)
+{
 
 	// auto& motion = mMotions[idx];
 	// if(mFrame > (motion->getNumFrames()-3))

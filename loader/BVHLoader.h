@@ -14,6 +14,8 @@ public:
 
 	const std::vector<std::string>& getHierarchy(){return hierarchy;}
 	int getNumFrames(){return mNumFrames;}
+	unsigned int GetNumNodes(){return mOffsets.size();}
+	unsigned int GetNumJoints(){return mNames.size();}
 	const std::vector<std::string>& getNodeNames(){return mNames;}
 	const std::vector<Eigen::Vector3d>& getOffsets(){return mOffsets;}
 	const std::vector<int>& getParents(){return mParents;}
