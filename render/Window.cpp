@@ -42,7 +42,10 @@ Window()
 	m_UIManager->initialize();
 
 	m_Controller = new Controller();
-	m_Controller->loadBVH(motion_lists[0]);
+	m_Controller->LoadBVH(motion_lists[0]);
+
+	std::string txt_path2 = "XBot.fbx";
+	m_Controller->LoadFBX(txt_path2);
 
 	this->reset();
 }
@@ -57,15 +60,15 @@ void
 Window::
 render()
 {
-	if(DrawUtils::initialized == false){
-		DrawUtils::buildMeshes();
-	}
+	// if(DrawUtils::initialized == false){
+	// 	DrawUtils::buildMeshes();
+	// }
 	initLights();
 	glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
 	glEnable(GL_MULTISAMPLE);
 	
-	DrawUtils::drawGround(0,100.0);
-	DrawUtils::drawSkeleton(m_Controller->getCharacter(),m_Controller->getBVH(), m_Controller->GetCurrentFrame());
+	// DrawUtils::drawGround(0,100.0);
+	// DrawUtils::drawSkeleton(m_Controller->getCharacter(),m_Controller->getBVH(), m_Controller->GetCurrentFrame());
 	m_UIManager->render();
 
 	if(m_UIManager->GetFilePath() != "")

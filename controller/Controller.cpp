@@ -6,6 +6,7 @@
 #include "Character.h"
 #include "MathUtils.h"
 #include "BVHLoader.h"
+#include "FBXLoader.h"
 #include "Motion.h"
 
 
@@ -38,8 +39,9 @@ step()
 	if(mFrame >= mMaxFrame) reset();
 }
 
-void Controller::
-loadBVH(const std::string& _path)
+void 
+Controller::
+LoadBVH(const std::string& _path)
 {
 	std::string path = std::string(ROOT_DIR)+"/data/bvh/" + _path;
 	
@@ -61,6 +63,17 @@ loadBVH(const std::string& _path)
 
 	// delete bvh;
 	delete motion;
+}
+
+void 
+Controller::
+LoadFBX(const std::string& _path)
+{
+	std::string path = std::string(ROOT_DIR)+"/data/fbx/" + _path;
+	FBXLoader* fbxLoader = new FBXLoader();
+	fbxLoader->LoadFBX(path);
+
+	delete fbxLoader;
 }
 
 void

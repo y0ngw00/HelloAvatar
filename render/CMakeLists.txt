@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10.2)
 project(render)
 
+set(OpenGL_GL_PREFERENCE LEGACY)
+
 link_directories(../loader/)
 include_directories(../loader/)
 link_directories(../controller/)

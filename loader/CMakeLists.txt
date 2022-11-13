@@ -14,8 +14,12 @@ add_compile_options(-std=gnu++17)
 add_compile_options(-Wdeprecated-declarations)
 
 find_package (Eigen3 3.3 REQUIRED)
+find_package(LibXml2 REQUIRED)
+
+include_directories(${FBX_INCLUDE_DIRS})
+include_directories(${LIBXML2_INCLUDE_DIR})
 
 file(GLOB srcs "*.h" "*.cpp")
 
 add_library(loader ${srcs})
-target_link_libraries(loader Eigen3::Eigen)
+target_link_libraries(loader Eigen3::Eigen ${FBX_LIBRARIES} ${LIBXML2_LIBRARIES})

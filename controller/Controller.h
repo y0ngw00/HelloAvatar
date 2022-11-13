@@ -15,7 +15,8 @@ public:
 
 	void reset();
 	void step();
-	void loadBVH(const std::string& _path);
+	void LoadBVH(const std::string& _path);
+	void LoadFBX(const std::string& _path);
 	void FollowBVH(int idx);
 
 	int GetCurrentFrame(){return mFrame;}

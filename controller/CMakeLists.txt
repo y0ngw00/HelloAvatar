@@ -19,9 +19,11 @@ find_package(PythonLibs REQUIRED)
 find_package(pybind11 REQUIRED)
 find_package (Eigen3 3.3 REQUIRED)
 
+
 include_directories(${DART_INCLUDE_DIRS})
+include_directories(${FBX_INCLUDE_DIRS})
 # include_directories(${PYTHON_INCLUDE_DIR})
 file(GLOB srcs "*.h" "*.cpp")
 
 add_library(con ${srcs})
-target_link_libraries(con ${DART_LIBRARIES} loader Eigen3::Eigen)
+target_link_libraries(con ${DART_LIBRARIES} ${FBX_LIBRARIES} loader Eigen3::Eigen)

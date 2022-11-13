@@ -4,6 +4,8 @@
 #include "lodepng.h"
 #include "Character.h"
 #include <assert.h>
+#include <GL/glew.h>
+#include <GL/glut.h>
 
 
 DrawMesh* DrawUtils::point = nullptr;
@@ -105,6 +107,17 @@ createVBO(const float* _vertices, const float* _normals, const float* _texcoords
 	for(int i=0;i<this->m;i++)
 		this->indices[i] = _indices[i];
 
+	GLenum err = glewInit();
+	if (err) 
+	{
+		fprintf(stderr, "Error: %s", glewGetErrorString(err));
+		std::cout<<"GLEW Error "<<  glewGetErrorString(err)<<"\n";
+		exit(0);	
+	}
+	else
+	{
+		std::cout<<"It works"<<'\n';
+	}
 	glGenBuffers(1, &this->vboId);
 	glBindBuffer(GL_ARRAY_BUFFER, this->vboId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*8*this->n, NULL, GL_STATIC_DRAW);
@@ -2628,22 +2641,22 @@ void
 DrawUtils::
 buildMeshes()
 {
-	point = MeshUtils::buildPointMesh();
-	line = MeshUtils::buildLineMesh();
-	quad = MeshUtils::buildQuadMesh();
+	// point = MeshUtils::buildPointMesh();
+	// line = MeshUtils::buildLineMesh();
+	// quad = MeshUtils::buildQuadMesh();
 	tile = MeshUtils::buildTileMesh(50);
-	box_solid = MeshUtils::buildBoxSolidMesh();
-	box_wire = MeshUtils::buildBoxWireMesh();
-	sphere = MeshUtils::buildSphereMesh(32,32);
-	sphere_wire_simple = MeshUtils::buildSphereWireSimpleMesh(32,32);
-	disk = MeshUtils::buildDiskMesh(32);
-	triangle = MeshUtils::buildTriangleMesh();
-	cylinder = MeshUtils::buildCylinder(32);
-	cylinder_wire_simple = MeshUtils::buildCylinderWireSimple(32);
-	cone = MeshUtils::buildCone(32);
-	cone_wire_simple = MeshUtils::buildConeWireSimple(32);
-	capsule = MeshUtils::buildCapsuleMesh(32,32);
-	capsule_wire_simple	 = MeshUtils::buildCapsuleWireSimpleMesh(32,32);
+	// box_solid = MeshUtils::buildBoxSolidMesh();
+	// box_wire = MeshUtils::buildBoxWireMesh();
+	// sphere = MeshUtils::buildSphereMesh(32,32);
+	// sphere_wire_simple = MeshUtils::buildSphereWireSimpleMesh(32,32);
+	// disk = MeshUtils::buildDiskMesh(32);
+	// triangle = MeshUtils::buildTriangleMesh();
+	// cylinder = MeshUtils::buildCylinder(32);
+	// cylinder_wire_simple = MeshUtils::buildCylinderWireSimple(32);
+	// cone = MeshUtils::buildCone(32);
+	// cone_wire_simple = MeshUtils::buildConeWireSimple(32);
+	// capsule = MeshUtils::buildCapsuleMesh(32,32);
+	// capsule_wire_simple	 = MeshUtils::buildCapsuleWireSimpleMesh(32,32);
 
 	character_texture_id = MeshUtils::buildTexture((std::string(ROOT_DIR)+"/data/textures/simchar.png").c_str());
 	ground_texture_id = MeshUtils::buildTexture((std::string(ROOT_DIR)+"/data/textures/ground.png").c_str());
