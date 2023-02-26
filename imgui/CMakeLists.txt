@@ -11,14 +11,17 @@ SET(IMGUI_DIR="${CMAKE_HOME_DIRECTORY}/imgui")
 
 find_package(GLUT REQUIRED)
 find_package(OpenGL REQUIRED)
+find_package(glfw3 3.3 REQUIRED)
 
 add_compile_options(-DHAVE_CSTDDEF)
-include_directories(${OPENGL_INCLUDE_DIR})
+
+include_directories(${OPENGL_INCLUDE_DIR} ${GLUT_INCLUDE_DIR})
+
 
 
 file(GLOB SOURCES *.cpp *.h)
 add_library(imgui ${SOURCES})
-target_link_libraries(imgui GL GLU glut )
+target_link_libraries(imgui "-framework OpenGL" ${GLUT_LIBRARY} glfw)
 
 # copy font file to the build directory
 # add_custom_command(
