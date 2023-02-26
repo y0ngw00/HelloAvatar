@@ -1,6 +1,11 @@
 #include "GLUTWindow3D.h"
 #include "Camera.h"
-#include <GL/glut.h>
+#ifdef __APPLE__
+	#include <GLUT/glut.h>
+#else
+	#include <GL/glut.h>
+#endif
+
 #include "imgui.h"
 
 // static float skyColor[] = {239.0/255.0, 251.0/255.0, 254.0/255.0, 1.0};
@@ -52,7 +57,6 @@ mouse(int button, int state, int x, int y)
 		if(!io.WantCaptureMouse){
 			mDrag = true;			
 		}
-
 		mPrevX = x;
 		mPrevY = y;
 	}

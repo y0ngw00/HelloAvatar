@@ -1,12 +1,21 @@
 #ifndef __DRAW_UTILS_H__
 #define __DRAW_UTILS_H__
 
+#ifdef __APPLE__
+	#include <OpenGL/gl.h>
+	#include <OpenGL/glu.h>
+	#include <GLUT/glut.h>
+#else
+	#include <GL/gl.h>
+	#include <GL/glu.h>
+	#include <GL/glut.h>
+	#include <GL/glew.h>
+#endif
+
 #include <Eigen/Core>
 #include <Eigen/Geometry>
 #include <utility>
 #include <vector>
-#include <GL/glew.h>
-#include <GL/glut.h>
 
 class BVH;
 class Character;

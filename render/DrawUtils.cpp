@@ -4,8 +4,6 @@
 #include "lodepng.h"
 #include "Character.h"
 #include <assert.h>
-#include <GL/glew.h>
-#include <GL/glut.h>
 
 
 DrawMesh* DrawUtils::point = nullptr;

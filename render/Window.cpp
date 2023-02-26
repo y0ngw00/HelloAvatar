@@ -106,7 +106,8 @@ keyboard(unsigned char key, int x, int y)
 		default:
 		{
 			GLUTWindow3D::keyboard(key,x,y);
-			m_UIManager->keyboardEvent(key,x,y);
+			if(m_UIManager != nullptr)
+				m_UIManager->keyboardEvent(key,x,y);
 			break;
 		}
 	}
@@ -124,7 +125,8 @@ special(int key, int x, int y)
 		default:
 		{
 			GLUTWindow3D::special(key,x,y);
-			m_UIManager->specialEvent(key,x,y);
+			if(m_UIManager != nullptr)
+				m_UIManager->specialEvent(key,x,y);
 			break;
 		}
 	}
@@ -135,7 +137,8 @@ Window::
 mouse(int button, int state, int x, int y)
 {
 	GLUTWindow3D::mouse(button,state,x,y);
-	m_UIManager->mouseEvent(button,state,x,y);
+	if(m_UIManager != nullptr)
+		m_UIManager->mouseEvent(button,state,x,y);
 
 	if(mMouse == 2) // Right
 	{
@@ -152,7 +155,8 @@ Window::
 motion(int x, int y)
 {
 	GLUTWindow3D::motion(x,y);
-	m_UIManager->motionEvent(x,y);
+	if(m_UIManager != nullptr)
+		m_UIManager->motionEvent(x,y);
 
 	if(mMouse == 2 && mDrag)
 	{
@@ -171,7 +175,8 @@ reshape(int w, int h)
 	mScreenshotTemp.resize(4*w*h);
 	mScreenshotTemp2.resize(4*w*h);
 	GLUTWindow3D::reshape(w,h);
-	m_UIManager->reshapeEvent(w,h);
+	if(m_UIManager != nullptr)
+		m_UIManager->reshapeEvent(w,h);
 }
 void
 Window::

@@ -2,9 +2,14 @@
 #include "Camera.h"
 #include "UIManager.h"
 #include <iostream>
-#include <GL/glew.h>
-#include <GL/glut.h>
-
+#ifdef __APPLE__
+	#include <OpenGL/gl.h>
+	#include <GLUT/glut.h>
+#else
+	#include <GL/gl.h>
+	#include <GL/glut.h>
+	#include <GL/glew.h>
+#endif
 
 
 std::vector<GLUTWindow*> GLUTWindow::windows;
@@ -27,13 +32,14 @@ initWindow(int w,int h,const std::string& name)
 	glutInitWindowSize(w, h);
 
 	winIDs.emplace_back(glutCreateWindow(name.c_str()));
-	
-	GLenum err = glewInit();
-	if (err) 
-	{
-		fprintf(stderr, "Error: %s", glewGetErrorString(err));
-		exit(0);	
-	}
+	#ifndef __APPLE__
+		GLenum err = glewInit();
+		if (err) 
+		{
+			fprintf(stderr, "Error: %s", glewGetErrorString(err));
+			exit(0);	
+		}
+	#endif
 
 	glutDisplayFunc(displayEvent);
 	glutReshapeFunc(reshapeEvent);
