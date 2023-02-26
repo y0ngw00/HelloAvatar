@@ -6,7 +6,7 @@
 #include "Character.h"
 #include "MathUtils.h"
 #include "BVHLoader.h"
-#include "FBXLoader.h"
+// #include "FBXLoader.h"
 #include "Motion.h"
 
 

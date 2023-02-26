@@ -105,17 +105,6 @@ createVBO(const float* _vertices, const float* _normals, const float* _texcoords
 	for(int i=0;i<this->m;i++)
 		this->indices[i] = _indices[i];
 
-	GLenum err = glewInit();
-	if (err) 
-	{
-		fprintf(stderr, "Error: %s", glewGetErrorString(err));
-		std::cout<<"GLEW Error "<<  glewGetErrorString(err)<<"\n";
-		exit(0);	
-	}
-	else
-	{
-		std::cout<<"It works"<<'\n';
-	}
 	glGenBuffers(1, &this->vboId);
 	glBindBuffer(GL_ARRAY_BUFFER, this->vboId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat)*8*this->n, NULL, GL_STATIC_DRAW);

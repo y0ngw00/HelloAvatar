@@ -36,7 +36,7 @@ include_directories(${IMGUI_DIR})
 file(GLOB srcs "*.h" "*.cpp")
 add_executable(render ${srcs})
 # target_link_libraries(render ${DART_LIBRARIES} ${OPENGL_LIBRARIES} ${GLUT_LIBRARIES} ${GLEW_LIBRARIES} ${COMCON_LIBRARY} ${PYTHON_LIBRARIES} pybind11::module)
-target_link_libraries(render "-framework OpenGL" ${GLUT_LIBRARIES} imgui sim ${PYTHON_LIBRARIES} Eigen3::Eigen pybind11::module pybind11::embed)
+target_link_libraries(render "-framework OpenGL" ${GLUT_LIBRARIES} imgui con ${PYTHON_LIBRARIES} Eigen3::Eigen pybind11::module pybind11::embed)
 
 if(APPLE)
 

@@ -1,7 +1,6 @@
-#include "imgui_filebrowser.h"
-#ifndef IMGUI_DEFINE_MATH_OPERATORS
 #define IMGUI_DEFINE_MATH_OPERATORS
-#endif
+
+#include "imgui_filebrowser.h"
 #include "imgui_internal.h"
 
 #include <iostream>
@@ -604,7 +603,7 @@ bool ImGuiFileBrowser::renderInputComboBox()
     input_combobox_sz.y = std::min<float>((inputcb_filter_files.size() + 1) * frame_height + style.WindowPadding.y *  2.0f,
                                     8 * ImGui::GetFrameHeight() + style.WindowPadding.y *  2.0f);
 
-    if(show_inputbar_combobox && ( ImGui::GetFocusedFocusScope() == focus_scope_id || ImGui::GetCurrentContext()->ActiveIdIsAlive == input_id  ))
+    if(show_inputbar_combobox && ( ImGui::GetCurrentFocusScope() == focus_scope_id || ImGui::GetCurrentContext()->ActiveIdIsAlive == input_id  ))
     {
         ImGuiWindowFlags popupFlags = ImGuiWindowFlags_NoTitleBar           |
                                         ImGuiWindowFlags_NoResize             |
